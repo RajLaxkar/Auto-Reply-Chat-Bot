@@ -1,0 +1,72 @@
+import pyautogui 
+import time      
+import pyperclip  
+from openai import OpenAI 
+                                             
+
+
+
+
+def check_last_message(chat, sender_name=""):    
+    
+    messages = chat.strip().split("/2025] ")[-1]                    
+    if sender_name in messages:                                         
+        return True                                                    
+                                                                        
+    return False
+                                                                       
+client = OpenAI(
+  api_key="",
+)
+
+
+
+
+pyautogui.click(1385 , 1079)
+
+time.sleep(1)  
+while True:                                            
+                                                       
+
+    time.sleep(5)
+    
+    pyautogui.moveTo(701, 268)
+    pyautogui.dragTo(1871, 913, duration=3.0, button='left')  
+
+    
+    time.sleep(2)  
+    pyautogui.click(1076 , 500)
+
+    
+    complete_chat = pyperclip.paste()
+
+    
+    print(complete_chat)                                     
+    print(check_last_message(complete_chat))       
+    if check_last_message(complete_chat):        
+        completion = client.chat.completions.create(       
+        model="gpt-4o",
+        messages=[
+            {"role": "system", "content": "You are a person named Raj who speaks Hindi, Hinglish, and English. You're from India. You analyze chat history and give hilarious response, always using aap instead of tu or tum. Your response should be only in 20 words."},
+            {"role": "system", "content": "Do not start like this [21:02, 12/6/2024] Gaurang: "},
+            {"role": "system", "content": "Do not start like this [12:51 pm, 09/03/2025] RAJ "},
+            {"role": "user", "content": complete_chat}
+        ]
+        )
+
+        response = completion.choices[0].message.content     
+        pyperclip.copy(response)                             
+
+        
+        pyautogui.click(1010, 957)
+        time.sleep(1)  
+
+        
+        pyautogui.hotkey('ctrl', 'v')
+        time.sleep(1)  
+
+        
+        pyautogui.press('enter')
+
+        
+
